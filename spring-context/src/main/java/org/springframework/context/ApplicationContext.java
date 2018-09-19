@@ -49,6 +49,7 @@ import org.springframework.lang.Nullable;
  * {@link ApplicationContextAware} beans as well as {@link ResourceLoaderAware},
  * {@link ApplicationEventPublisherAware} and {@link MessageSourceAware} beans.
  *
+ * ≤‚ ‘
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see ConfigurableApplicationContext
