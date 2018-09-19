@@ -20,18 +20,25 @@ import java.beans.PropertyDescriptor;
 
 /**
  * The central interface of Spring's low-level JavaBeans infrastructure.
- *
+ * 
+ * 核心操作类，通常不会被直接使用。往往通过 BeanFactory，DataBinder来使用
+ * 
  * <p>Typically not used directly but rather implicitly via a
  * {@link org.springframework.beans.factory.BeanFactory} or a
  * {@link org.springframework.validation.DataBinder}.
- *
+ * 
+ * 1 提供 get/set属性的能力
+ * 2 提供 query属性 read/write的能力
+ * 
  * <p>Provides operations to analyze and manipulate standard JavaBeans:
  * the ability to get and set property values (individually or in bulk),
  * get property descriptors, and query the readability/writability of properties.
  *
  * <p>This interface supports <b>nested properties</b> enabling the setting
  * of properties on subproperties to an unlimited depth.
- *
+ * 
+ * 嵌套设置属性值，不限深度
+ * 
  * <p>A BeanWrapper's default for the "extractOldValueForEditor" setting
  * is "false", to avoid side effects caused by getter method invocations.
  * Turn this to "true" to expose present property values to custom editors.
@@ -63,11 +70,14 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 
 	/**
 	 * Return the bean instance wrapped by this object.
+	 * 返回对象的实例
 	 */
 	Object getWrappedInstance();
 
 	/**
 	 * Return the type of the wrapped bean instance.
+	 * 返回对象的类型
+	 * 这里返回的是泛型，?代表任何实例
 	 */
 	Class<?> getWrappedClass();
 
@@ -75,6 +85,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	 * Obtain the PropertyDescriptors for the wrapped object
 	 * (as determined by standard JavaBeans introspection).
 	 * @return the PropertyDescriptors for the wrapped object
+	 * 代表该bean的 get/set属性，所有
 	 */
 	PropertyDescriptor[] getPropertyDescriptors();
 
@@ -85,6 +96,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	 * (may be a nested path, but no indexed/mapped property)
 	 * @return the property descriptor for the specified property
 	 * @throws InvalidPropertyException if there is no such property
+	 * 代表该bean的get/set属性，特定的一个
 	 */
 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;
 
