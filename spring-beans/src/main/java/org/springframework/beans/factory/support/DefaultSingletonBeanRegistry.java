@@ -71,22 +71,28 @@ import org.springframework.util.StringUtils;
 public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
 
 	/** Cache of singleton objects: bean name to bean instance. */
+	// 单例对象的缓存，键-对象
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
 	/** Cache of singleton factories: bean name to ObjectFactory. */
+	// 单例对象工厂的缓存，键-工厂
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name to bean instance. */
+	// 单例对象工厂创建出的对象缓存，键-工厂创建出的对象
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order. */
+	// 所有单例name，按注册顺序存放
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
 	/** Names of beans that are currently in creation. */
+	// 目前正在创建中的单例name集合
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
 	/** Names of beans currently excluded from in creation checks. */
+	// 目前正在创建中的单例name集合中，不需要检查的
 	private final Set<String> inCreationCheckExclusions =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -132,9 +138,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	protected void addSingleton(String beanName, Object singletonObject) {
 		synchronized (this.singletonObjects) {
+			// 添加一个共享对象的实例
 			this.singletonObjects.put(beanName, singletonObject);
+			// 将该name对应的工厂移除。不需要在创建对象了
 			this.singletonFactories.remove(beanName);
+			// 将该name对应的工厂创建的对象移除。不需要该对象了
 			this.earlySingletonObjects.remove(beanName);
+			// 标记该name已经实例好了
 			this.registeredSingletons.add(beanName);
 		}
 	}
@@ -150,9 +160,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
+			// 注册一个单例工厂
+			// 如果有该单例了，那工厂就不需要注册了
 			if (!this.singletonObjects.containsKey(beanName)) {
+				// 注册工厂
 				this.singletonFactories.put(beanName, singletonFactory);
+				// 将工厂创建的对象移除
 				this.earlySingletonObjects.remove(beanName);
+				// 标记该name对应的工厂已经注册好了
 				this.registeredSingletons.add(beanName);
 			}
 		}
@@ -174,10 +189,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		// 获取该name对应的单例对象
 		Object singletonObject = this.singletonObjects.get(beanName);
+		// 如果还未实例化，且在实例化中
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
+				// 先检查工厂创建的对象是否存在
 				singletonObject = this.earlySingletonObjects.get(beanName);
+				// 不存在，但允许earlyReference，那么需要创建该对象
 				if (singletonObject == null && allowEarlyReference) {
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {

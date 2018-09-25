@@ -31,10 +31,14 @@ import org.springframework.lang.Nullable;
  * autowiring, provided that they want to expose this functionality for
  * existing bean instances.
  *
+ * 如果一个工厂想要拥有自动装配能力，并且希望暴露给外部，那么它应给实现该接口
+ * 
  * <p>This subinterface of BeanFactory is not meant to be used in normal
  * application code: stick to {@link org.springframework.beans.factory.BeanFactory}
  * or {@link org.springframework.beans.factory.ListableBeanFactory} for
  * typical use cases.
+ *
+ * 这个接口并不常用，通常使用BeanFactory，ListableBeanFactory。
  *
  * <p>Integration code for other frameworks can leverage this interface to
  * wire and populate existing bean instances that Spring does not control
@@ -47,6 +51,8 @@ import org.springframework.lang.Nullable;
  * from an application context too, accessible through ApplicationContext's
  * {@link org.springframework.context.ApplicationContext#getAutowireCapableBeanFactory()}
  * method.
+ * 
+ * ApplicationContext并没有实现该接口，但是也可以通过其他手段使用该接口
  *
  * <p>You may also implement the {@link org.springframework.beans.factory.BeanFactoryAware}
  * interface, which exposes the internal BeanFactory even when running in an
