@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
  * Exception thrown when a {@code BeanFactory} is asked for a bean instance for which
  * multiple matching candidates have been found when only one matching bean was expected.
  *
+ * Bean≤ªŒ®“ª“Ï≥£
+ *
  * @author Juergen Hoeller
  * @since 3.2.1
  * @see BeanFactory#getBean(Class)

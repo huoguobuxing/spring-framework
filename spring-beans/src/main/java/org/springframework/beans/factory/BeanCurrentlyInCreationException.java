@@ -20,6 +20,8 @@ package org.springframework.beans.factory;
  * Exception thrown in case of a reference to a bean that's currently in creation.
  * Typically happens when constructor autowiring matches the currently constructed bean.
  *
+ * 创建异常-创建中异常
+ *
  * @author Juergen Hoeller
  * @since 1.1
  */

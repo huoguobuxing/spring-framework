@@ -21,6 +21,8 @@ package org.springframework.beans.factory;
  * bean creation currently not being allowed (for example, during
  * the shutdown phase of a bean factory).
  *
+ * 创建异常-不允许创建（例如，beanFactory关闭阶段）
+ *
  * @author Juergen Hoeller
  * @since 2.0
  */

@@ -21,7 +21,7 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Thrown when a bean doesn't match the expected type.
- *
+ * Bean实际类型同请求的类型不一致异常基类
  * @author Rod Johnson
  * @author Juergen Hoeller
  */

@@ -21,6 +21,8 @@ package org.springframework.beans.factory;
  * {@link ClassLoader class loader}; that is, the class loader used by the
  * present bean factory to load bean classes.
  *
+ * 如果一个Bean期望得到自己的ClassLoader，那么需要实现该接口
+ *
  * <p>This is mainly intended to be implemented by framework classes which
  * have to pick up application classes by name despite themselves potentially
  * being loaded from a shared class loader.

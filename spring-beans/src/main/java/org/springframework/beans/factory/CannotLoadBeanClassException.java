@@ -23,6 +23,8 @@ import org.springframework.lang.Nullable;
  * Exception thrown when the BeanFactory cannot load the specified class
  * of a given bean.
  *
+ * 致命的异常-BeanFactory不能加载类
+ *
  * @author Juergen Hoeller
  * @since 2.0
  */

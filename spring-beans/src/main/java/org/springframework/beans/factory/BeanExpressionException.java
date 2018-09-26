@@ -21,6 +21,8 @@ import org.springframework.beans.FatalBeanException;
 /**
  * Exception that indicates an expression evaluation attempt having failed.
  *
+ * 致命异常-表达式无效异常
+ *
  * @author Juergen Hoeller
  * @since 3.0
  */

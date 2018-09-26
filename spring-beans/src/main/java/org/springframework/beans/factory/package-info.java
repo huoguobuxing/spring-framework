@@ -1,6 +1,8 @@
 /**
  * The core package implementing Spring's lightweight Inversion of Control (IoC) container.
  *
+ * Spring 轻量级IOC容器的实现
+ *
  * <p>Provides an alternative to the Singleton and Prototype design
  * patterns, including a consistent approach to configuration management.
  * Builds on the org.springframework.beans package.

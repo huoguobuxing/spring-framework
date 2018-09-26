@@ -23,6 +23,13 @@ package org.springframework.beans.factory;
  * determined by individual subinterfaces, but should typically
  * consist of just one void-returning method that accepts a single
  * argument.
+ * 
+ * Spring的IOC容器就是管理Bean的，当我们自定义的Bean期望得到SpringFramework的一个对象时，我们需要实现对象Aware接口
+ * 这样Spring容器就能在实例化对象后，调用该接口定义的方法，注入我们期望的对象
+ * 
+ * 也就是说，自定义Bean期望从容器获得什么，就要实现对应的Aware接口
+ * 
+ * 这里只是所有Aware接口的父接口
  *
  * <p>Note that merely implementing {@link Aware} provides no default
  * functionality. Rather, processing must be done explicitly, for example

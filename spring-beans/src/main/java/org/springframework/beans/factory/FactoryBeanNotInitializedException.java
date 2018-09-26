@@ -22,6 +22,8 @@ import org.springframework.beans.FatalBeanException;
  * Exception to be thrown from a FactoryBean's {@code getObject()} method
  * if the bean is not fully initialized yet, for example because it is involved
  * in a circular reference.
+ * 
+ * 致命异常-FactoryBean.getObject()发现循环引用
  *
  * <p>Note: A circular reference with a FactoryBean cannot be solved by eagerly
  * caching singleton instances like with normal beans. The reason is that
