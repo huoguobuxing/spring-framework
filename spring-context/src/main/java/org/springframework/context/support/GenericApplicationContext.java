@@ -44,6 +44,8 @@ import org.springframework.util.Assert;
  * the {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
  * interface in order to allow for applying any bean definition readers to it.
  *
+ * BeanFactory是Spring容器实现的定义 。通用的上下文实现。持有一个DefaultListableBeanFactory实例
+ *
  * <p>Typical usage is to register a variety of bean definitions via the
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
  * interface and then call {@link #refresh()} to initialize those beans
