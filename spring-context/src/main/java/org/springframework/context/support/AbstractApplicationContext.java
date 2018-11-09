@@ -83,6 +83,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * 
+ * 对ApplicationContext的接口的抽象实现
+ * 注意，上下文的基类竟然是 DefaultResourceLoader
+ * 
  * Abstract implementation of the {@link org.springframework.context.ApplicationContext}
  * interface. Doesn't mandate the type of storage used for configuration; simply
  * implements common context functionality. Uses the Template Method design pattern,

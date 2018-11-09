@@ -27,10 +27,17 @@ import org.springframework.core.io.ProtocolResolver;
 import org.springframework.lang.Nullable;
 
 /**
+ * 
+ * 被大部分ApplictionContext实现
+ * 提供配置ApplicationContenxt的工具
+ * 相比ApplicationContext接口，多了Lifecyle,和Closeable
+ * 
  * SPI interface to be implemented by most if not all application contexts.
  * Provides facilities to configure an application context in addition
  * to the application context client methods in the
  * {@link org.springframework.context.ApplicationContext} interface.
+ *
+ * 配置和生命周期相关的方法应该被封装到这里，这里对ApplicationContext的Client只暴露 startup 和 shutdown
  *
  * <p>Configuration and lifecycle methods are encapsulated here to avoid
  * making them obvious to ApplicationContext client code. The present
@@ -42,6 +49,11 @@ import org.springframework.lang.Nullable;
  */
 public interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle, Closeable {
 
+	/**
+	 * 以下属性为默认使用的bean名称
+	 */
+	
+	
 	/**
 	 * Any number of these characters are considered delimiters between
 	 * multiple context config paths in a single String value.
@@ -94,6 +106,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void setId(String id);
 
 	/**
+	 * 
+	 * 目前不太理解
+	 * 
 	 * Set the parent of this application context.
 	 * <p>Note that the parent shouldn't be changed: It should only be set outside
 	 * a constructor if it isn't available when an object of this class is created,
@@ -127,8 +142,15 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor);
 
 	/**
+	 * 
+	 *  添加一个 ApplicationContext的Listener,当有ContextEvent被publish时，Listener会处理。
+	 *  例如 ContextRefreshEvent ，ContextShutdownEvent
+	 * 
 	 * Add a new ApplicationListener that will be notified on context events
 	 * such as context refresh and context shutdown.
+	 * 
+	 * 以下不懂
+	 * 
 	 * <p>Note that any ApplicationListener registered here will be applied
 	 * on refresh if the context is not active yet, or on the fly with the
 	 * current event multicaster in case of a context that is already active.
@@ -139,6 +161,8 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void addApplicationListener(ApplicationListener<?> listener);
 
 	/**
+	 * 添加一个协议解析器，可以覆盖默认行为
+	 * 
 	 * Register the given protocol resolver with this application context,
 	 * allowing for additional resource protocols to be handled.
 	 * <p>Any such resolver will be invoked ahead of this context's standard
@@ -148,6 +172,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void addProtocolResolver(ProtocolResolver resolver);
 
 	/**
+	 * 
+	 *  加载或者刷新ApplicationContext，基于xml文件，properties文件或者关系数据库
+	 * 
 	 * Load or refresh the persistent representation of the configuration,
 	 * which might an XML file, properties file, or relational database schema.
 	 * <p>As this is a startup method, it should destroy already created singletons
@@ -160,6 +187,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void refresh() throws BeansException, IllegalStateException;
 
 	/**
+	 * 
+	 * 注册一个JVM的shutdown钩子，当JVM执行shutdown时，调用注册的方法
+	 * 
 	 * Register a shutdown hook with the JVM runtime, closing this context
 	 * on JVM shutdown unless it has already been closed at that time.
 	 * <p>This method can be called multiple times. Only one shutdown hook
@@ -170,6 +200,11 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void registerShutdownHook();
 
 	/**
+	 * 
+	 * 关闭ApplicationContext,释放所有的资源和锁，也包括销毁所有的单例
+	 * 切忌，不要在当前实例上调用,parent的close
+	 * 
+	 * 
 	 * Close this application context, releasing all resources and locks that the
 	 * implementation might hold. This includes destroying all cached singleton beans.
 	 * <p>Note: Does <i>not</i> invoke {@code close} on a parent context;
@@ -181,6 +216,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	void close();
 
 	/**
+	 * 
+	 *  判断applicationContext是否还活着
+	 *  判断规则：被refresh过至少一次，且没有close
+	 * 
 	 * Determine whether this application context is active, that is,
 	 * whether it has been refreshed at least once and has not been closed yet.
 	 * @return whether the context is still active
@@ -191,6 +230,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	boolean isActive();
 
 	/**
+	 * 
+	 *  获取applicationContext的内部 beanFactory, 可以访问beanFactory的底层功能
+	 *  通常只是被该applicationContext使用
+	 * 
 	 * Return the internal bean factory of this application context.
 	 * Can be used to access specific functionality of the underlying factory.
 	 * <p>Note: Do not use this to post-process the bean factory; singletons
