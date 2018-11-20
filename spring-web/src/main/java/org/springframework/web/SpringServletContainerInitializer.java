@@ -31,12 +31,19 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 /**
+ * 
+ * Servlet3.0之后，才支持使用java代码配置Servlet容器，以前只支持web.xml的方式
+ * 
  * Servlet 3.0 {@link ServletContainerInitializer} designed to support code-based
  * configuration of the servlet container using Spring's {@link WebApplicationInitializer}
  * SPI as opposed to (or possibly in combination with) the traditional
  * {@code web.xml}-based approach.
  *
  * <h2>Mechanism of Operation</h2>
+ * 
+ * 支持Servlet3.0的Servlet容器，在容器启动时，如果classPath里有spring-web的jar包，那么他会找到ServletContainerInitializer的实例
+ * 并注入HandlesTypes中的类，调用startUp方法。
+ * 
  * This class will be loaded and instantiated and have its {@link #onStartup}
  * method invoked by any Servlet 3.0-compliant container during container startup assuming
  * that the {@code spring-web} module JAR is present on the classpath. This occurs through
@@ -46,6 +53,9 @@ import org.springframework.util.ReflectionUtils;
  * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider">
  * JAR Services API documentation</a> as well as section <em>8.2.4</em> of the Servlet 3.0
  * Final Draft specification for complete details.
+ *
+ * 实现接口的方式与基于web.xml方式可以联合使用。web.xml可以限制查找jar的范围。同时指定查找jar的顺序
+ *
  *
  * <h3>In combination with {@code web.xml}</h3>
  * A web application can choose to limit the amount of classpath scanning the Servlet
@@ -57,12 +67,17 @@ import org.springframework.util.ReflectionUtils;
  * can be enabled by adding "spring_web" to the list of named web fragments in
  * {@code web.xml} as follows:
  *
+ *	可以在xml中指定jar的顺序
+ *
  * <pre class="code">
  * &lt;absolute-ordering&gt;
  *   &lt;name>some_web_fragment&lt;/name&gt;
  *   &lt;name>spring_web&lt;/name&gt;
  * &lt;/absolute-ordering&gt;
  * </pre>
+ *
+ *	与 WebApplicationInitializer 的关系
+ *  该类调用一堆WebApplicationInitializer而已
  *
  * <h2>Relationship to Spring's {@code WebApplicationInitializer}</h2>
  * Spring's {@code WebApplicationInitializer} SPI consists of just one method:
@@ -104,7 +119,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
- * @since 3.1
+ * @since 3.1 3.1之后的容器才支持通过该接口的实现初始化容器
  * @see #onStartup(Set, ServletContext)
  * @see WebApplicationInitializer
  */

@@ -20,10 +20,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
+ * 
+ * 用来配置ServletContext的
+ * 
  * Interface to be implemented in Servlet 3.0+ environments in order to configure the
  * {@link ServletContext} programmatically -- as opposed to (or possibly in conjunction
  * with) the traditional {@code web.xml}-based approach.
  *
+ * 实现了该接口的类，会被注入到 SpringServletContainerInitializer 中，而SpringServletContainerInitializer又会被Servlet3.0+的
+ * Servlet容器调用
  * <p>Implementations of this SPI will be detected automatically by {@link
  * SpringServletContainerInitializer}, which itself is bootstrapped automatically
  * by any Servlet 3.0 container. See {@linkplain SpringServletContainerInitializer its
@@ -52,6 +57,8 @@ import javax.servlet.ServletException;
  *   &lt;url-pattern&gt;/&lt;/url-pattern&gt;
  * &lt;/servlet-mapping&gt;</pre>
  *
+ * 例如，可以创建一个 DispatcherServlet , 并且基于同名的xml配置 
+ * 
  * <h3>The code-based approach with {@code WebApplicationInitializer}</h3>
  * Here is the equivalent {@code DispatcherServlet} registration logic,
  * {@code WebApplicationInitializer}-style:
@@ -60,9 +67,11 @@ import javax.servlet.ServletException;
  *
  *    &#064;Override
  *    public void onStartup(ServletContext container) {
+ *      创建一个ApplicationContext
  *      XmlWebApplicationContext appContext = new XmlWebApplicationContext();
+ *      配置xml
  *      appContext.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
- *
+ *		搞不懂为什么出现了static interface的使用方法
  *      ServletRegistration.Dynamic dispatcher =
  *        container.addServlet("dispatcher", new DispatcherServlet(appContext));
  *      dispatcher.setLoadOnStartup(1);
@@ -71,8 +80,12 @@ import javax.servlet.ServletException;
  *
  * }</pre>
  *
+ * 作为上述实现的一种替换，直接继承AbstractDispatcherServletInitializer也是可以的
+ * 
  * As an alternative to the above, you can also extend from {@link
  * org.springframework.web.servlet.support.AbstractDispatcherServletInitializer}.
+ *
+ * 由于Servlet3.0提供了addServlet方法，所以，我们可以把Servlet当做普通对象进行处理
  *
  * As you can see, thanks to Servlet 3.0's new {@link ServletContext#addServlet} method
  * we're actually registering an <em>instance</em> of the {@code DispatcherServlet}, and
